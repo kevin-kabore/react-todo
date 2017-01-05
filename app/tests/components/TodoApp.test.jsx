@@ -12,7 +12,7 @@ describe('TodoApp', () => {
   });
 
   it('should add Todo to the todos state on handleAddTodo'), () => {
-    var todoText = testText
+    var todoText = 'testText' 
     var todoApp = TestUtils.renderIntoDocument(<TodoApp/>);
 
     todoApp.setState({todos: []})
@@ -20,4 +20,19 @@ describe('TodoApp', () => {
 
     expect(todoApp.state.todos[0].text).toBe(todoText);
   }
-})
+
+  it('it should toggle completed value when handleToggle called', () => {
+    var todoData = {
+      id: 11,
+      text: 'example text',
+      completed: false
+    }
+    var todoApp = TestUtils.renderIntoDocument(<TodoApp/>);
+    todoApp.setState({todos: [todoData]})
+
+    expect(todoApp.state.todos[0].completed).toBe(false);
+    todoApp.handleToggle(11);
+    expect(todoApp.state.todos[0].completed).toBe(true);
+
+  });
+});
