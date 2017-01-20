@@ -12,9 +12,6 @@ store.subscribe(() => {
   console.log('New State: ', store.getState())
 });
 
-store.dispatch(actions.addTodo('Finish section on Redux'))
-store.dispatch(actions.setSearchText('Redux'))
-store.dispatch(actions.toggleShowCompleted())
 
 
 // load foundation
