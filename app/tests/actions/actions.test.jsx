@@ -12,7 +12,7 @@ describe('Actions', () => {
     expect(res).toEqual(action);
   })
 
-  it('Should generate toggleShowCompleted action', () => {
+  it('Should generate TOGGLE_SHOW_COMPLETED action', () => {
     var action = {
       type: 'TOGGLE_SHOW_COMPLETED'
     }
@@ -20,12 +20,28 @@ describe('Actions', () => {
     expect(res).toEqual(action)
   })
 
-  it('Should generate add Todo action', () =>{
+  it('Should generate ADD_TODO action', () =>{
     var action = {
       type: 'ADD_TODO',
       text: 'Thing to do'
     }
     var res = actions.addTodo(action.text)
+    expect(res).toEqual(action)
+  })
+
+  it('Should generate ADD_TODOS action', () => {
+    var todos = [{
+      id: 15,
+      text: 'Anything',
+      completed: false,
+      completedAt: undefined,
+      createdAt: 1500
+    }]
+    var action = {
+      type: 'ADD_TODOS',
+      todos: todos
+    }
+    var res = actions.addTodos(todos);
     expect(res).toEqual(action)
   })
 

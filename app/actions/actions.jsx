@@ -18,6 +18,12 @@ export var addTodo = (text) => {
     text
   }
 }
+export var addTodos = (todos) => {
+  return {
+    type: 'ADD_TODOS',
+    todos
+  }
+}
 
 //ToggleTodo takes id
 export var toggleTodo = (id) => {
