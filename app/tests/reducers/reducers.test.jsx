@@ -44,7 +44,7 @@ describe('Reducers', () => {
 
     //Define todos array with realistic todo item
     //Generate an actoion that matches id
-     it('Should toggle Todo and update completedAt', () => {
+     it('Should update Todo and update completedAt', () => {
        var todos = [
          {
            id: 2,
@@ -54,14 +54,20 @@ describe('Reducers', () => {
            completedAt: 125
          }
        ]
+       var updates = {
+         completed: false,
+         completedAt: null
+       }
        var action = {
-         type: 'TOGGLE_TODO',
-         id: 2
+         type: 'UPDATE_TODO',
+         id: todos[0].id,
+         updates
        }
        var res = reducers.todosReducer(df(todos), df(action));
 
-       expect(res[0].completed).toEqual(false)
-       expect(res[0].completedAt).toBe(undefined)
+       expect(res[0].completed).toEqual(updates.completed)
+       expect(res[0].completedAt).toBe(updates.completedAt)
+       expect(res[0].text).toEqual(todos[0].text)
      })
 
      it('Should add existing todos', () => {
