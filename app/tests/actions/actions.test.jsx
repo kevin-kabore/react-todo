@@ -82,39 +82,61 @@ describe('Actions', () => {
   })
 
   describe('Tests with firebase todos', () => {
-    var testTodoRef;
-    beforeEach((done) => {
-      testTodoRef = firebaseRef.child('todos').push()
+  var testTodoRef;
 
-      testTodoRef.set({
-        text: 'Something todo',
+  beforeEach((done) => {
+    var todosRef = firebaseRef.child('todos');
+
+    todosRef.remove().then(() => {
+      testTodoRef = firebaseRef.child('todos').push();
+
+      return testTodoRef.set({
+        text: 'Something to do',
         completed: false,
-        completedAt: 12344556
-      }).then(() => done())
+        createdAt: 23453453
+      })
     })
+    .then(() => done())
+    .catch(done);
+  });
 
-    afterEach((done) => {
-      testTodoRef.remove(() => done())
-    })
-    it('Should togge todo and update Todo action', (done) => {
-      const store = createMockStore({})
-      const action = actions.startToggleTodo(testTodoRef.key, true)
+  afterEach((done) => {
+    testTodoRef.remove().then(() => done());
+  });
 
-      store.dispatch(action).then(() => {
-        const mockActions = store.getActions()
+  it('should toggle todo and dispatch UPDATE_TODO action', (done) => {
+    const store = createMockStore({});
+    const action = actions.startToggleTodo(testTodoRef.key, true);
 
-        expect(mockActions[0]).toInclude({
-          type: 'UPDATE_TODO',
-          id: testTodoRef.key
-        })
+    store.dispatch(action).then(() => {
+      const mockActions = store.getActions();
 
-        expect(mockActions[0].updates).toInclude({
-          completed: true
-        })
+      expect(mockActions[0]).toInclude({
+        type: 'UPDATE_TODO',
+        id: testTodoRef.key
+      });
+      expect(mockActions[0].updates).toInclude({
+        completed: true
+      });
+      expect(mockActions[0].updates.completedAt).toExist();
 
-        expect(mockActions[0].updates.completedAt).toExist()
-        done()
-      }, done)
-    })
-  })
-})
+      done();
+    }, done);
+  });
+
+  it('should populate todos and dispatch ADD_TODOS', (done) => {
+    const store = createMockStore({});
+    const action = actions.startAddTodos();
+
+    store.dispatch(action).then(() => {
+      const mockActions = store.getActions();
+
+      expect(mockActions[0].type).toEqual('ADD_TODOS');
+      expect(mockActions[0].todos.length).toEqual(1);
+      expect(mockActions[0].todos[0].text).toEqual('Something to do');
+
+      done();
+    }, done)
+  });
+});
+});
