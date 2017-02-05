@@ -1,5 +1,6 @@
 var uuid = require('node-uuid')
 var moment = require('moment')
+
 export var searchTextReducer = (state = '', action) => {
   switch (action.type) {
     case 'SET_SEARCH_TEXT':
@@ -26,24 +27,36 @@ export var todosReducer = (state = [], action) => {
         ...state,
         action.todo
       ];
-      case 'UPDATE_TODO':
-        return state.map((todo) => {
-          if (todo.id === action.id) {
-            return {
-              ...todo,
-              ...action.updates
-            }
-          } else {
-            return todo;
+    case 'UPDATE_TODO':
+      return state.map((todo) => {
+        if (todo.id === action.id) {
+          return {
+            ...todo,
+            ...action.updates
           }
-        })
-      case 'ADD_TODOS':
-        return [
-          ...state,
-          ...action.todos
-        ]
-      default:
-        return state
-
+        } else {
+          return todo;
+        }
+      })
+    case 'ADD_TODOS':
+      return [
+        ...state,
+        ...action.todos
+      ]
+    default:
+      return state
   }
 }
+
+export var authReducer = (state = {}, action) => {
+  switch (action.type) {
+    case 'LOGIN':
+      return {
+        uid: action.uid
+      };
+    case 'LOGOUT':
+      return {};
+    default:
+      return state
+    };
+  };

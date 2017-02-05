@@ -23,8 +23,9 @@ describe('Reducers', () => {
       var res = reducers.showCompletedReducer(df(false), df(action));
 
       expect(res).toEqual(true)
-    })
-  })
+    });
+  });
+
   describe('todosReducer', () =>{
     it('Should add new Todo', () => {
       var action = {
@@ -86,6 +87,31 @@ describe('Reducers', () => {
 
        expect(res.length).toEqual(1)
        expect(res[0]).toEqual(todos[0])
-     })
-  })
-})
+     });
+  });
+  describe('authReducer', () => {
+      it('Should store uid on LOGIN', () => {
+        const action = {
+          type: 'LOGIN',
+          uid: 'someid123'
+        };
+        const res = reducers.authReducer(undefined, df(action))
+
+        expect(res).toEqual({
+          uid: action.uid
+        })
+      });
+  });
+  it('Should wipe auth on LOGOUT', () => {
+    const authData = {
+      uid: '123abc'
+    };
+    const action = {
+      type: 'LOGOUT'
+    };
+    const res = reducers.authReducer(df(authData), df(action))
+
+    expect(res).toEqual({})
+
+  });
+});
